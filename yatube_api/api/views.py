@@ -5,7 +5,8 @@ from rest_framework import filters
 
 from .mixins import CreateListViewSet
 from .permissions import IsAuthorOrReadOnly
-from .serializers import PostSerializer, GroupSerializer, CommentSerializer, FollowSerializer
+from .serializers import (PostSerializer, GroupSerializer,
+                          CommentSerializer, FollowSerializer)
 from posts.models import Post, Group, Follow, Comment
 
 
@@ -49,4 +50,4 @@ class FollowViewSet(CreateListViewSet):
         return Follow.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)    
+        serializer.save(user=self.request.user)

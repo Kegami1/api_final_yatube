@@ -12,6 +12,7 @@ class Group(models.Model):
     def __str__(self):
         return self.description
 
+
 class Post(models.Model):
     text = models.TextField()
     pub_date = models.DateTimeField('Дата публикации', auto_now_add=True)
@@ -22,7 +23,7 @@ class Post(models.Model):
         null=True,
         blank=True,
         on_delete=models.CASCADE,
-        related_name='posts')    
+        related_name='posts')
     image = models.ImageField(
         upload_to='posts/', null=True, blank=True)
 
@@ -38,6 +39,7 @@ class Comment(models.Model):
     text = models.TextField()
     created = models.DateTimeField(
         'Дата добавления', auto_now_add=True, db_index=True)
+
 
 class Follow(models.Model):
     user = models.ForeignKey(
