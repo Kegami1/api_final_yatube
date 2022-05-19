@@ -7,7 +7,7 @@ from .mixins import CreateListViewSet
 from .permissions import IsAuthorOrReadOnly
 from .serializers import (PostSerializer, GroupSerializer,
                           CommentSerializer, FollowSerializer)
-from posts.models import Post, Group, Follow, Comment
+from posts.models import Post, Group
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -27,7 +27,6 @@ class GroupViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = (IsAuthorOrReadOnly,)
 
@@ -41,13 +40,13 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 class FollowViewSet(CreateListViewSet):
-    queryset = Follow.objects.all()
     serializer_class = FollowSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ('following__username',)
 
     def get_queryset(self):
-        return Follow.objects.filter(user=self.request.user)
+        user = self.request.user
+        return user.follower.all()
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
